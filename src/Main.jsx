@@ -11,6 +11,10 @@ export default function Main() {
     const navigate = useNavigate();
     const [searchTerms, setSearchTerms] = useState("");
 
+    useEffect(() => {
+        document.title = 'BEDbase - A database of genomic intervals';
+    }, []);
+
     const handleSearchInput = (e) => {
         setSearchTerms(e.target.value);
     };

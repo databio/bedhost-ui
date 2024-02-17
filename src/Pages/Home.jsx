@@ -80,7 +80,7 @@ function Home() {
             <Row>
               <Col md="auto">
                 <h1 style={{ marginTop: "100px" }}>
-                  Welcome to BEDbase
+                  Welcome to BEDbase - A database of genomic intervals
                 </h1>
               </Col>
               <p>

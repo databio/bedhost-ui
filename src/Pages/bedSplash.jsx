@@ -41,16 +41,15 @@ const BedSplash = ({ router }) => {
         const schema = await api.get("/bed/schema").then(({ data }) => data["properties"]["samples"]["properties"]);
         setBedSchema(schema);
 
-        const data = await api
+      const data = await api
         .get(`/bed/${router.params.bed_md5sum}/metadata`)
-        .then(({ data }) => {
+        .then(response => {
           setCode(200);
-          return data.metadata;
+          return response.data.metadata; // return the whole response object
         })
         .catch(error => {
           setCode(error.response.status)
         });
-        console.log(data);
 
         if (data.bigbedfile !== null) {
           setBigBed(true);
@@ -68,7 +67,10 @@ const BedSplash = ({ router }) => {
 
         setBedStats(moveToTheEnd(bedStats));
 
+        console.log(bedStats);
+
         const newBedFig = [];
+        // debugger;
         Object.entries(schema).forEach(([key, value]) => {
           if (typeof value.object_type !== "undefined" && value.object_type === "image") {
             console.log(`${bedhost_api_url}/objects/bed.${router.params.bed_md5sum}.${key}/access/http/bytes`)
@@ -76,11 +78,13 @@ const BedSplash = ({ router }) => {
               id: key,
               title: value.description,
               src_pdf: `${bedhost_api_url}/objects/bed.${router.params.bed_md5sum}.${key}/access/http/bytes`,
-              src_png: `${bedhost_api_url}/objects/bed.${router.params.metadata.bed_md5sum}.${key}/access/http/thumbnail`
+              src_png: `${bedhost_api_url}/objects/bed.${router.params.bed_md5sum}.${key}/access/http/thumbnail`
               // src_png: `/fignotavl_png.svg`
             });
           }
         });
+
+        console.log(newBedFig);
 
         const newBedFiles = {};
         Object.entries(schema).forEach(([key, value]) => {
@@ -132,6 +136,7 @@ const BedSplash = ({ router }) => {
         } else {
           const bedUrl = await api.get(`${bedhost_api_url}/objects/bed.${router.params.bed_md5sum}.bedfile/access/http`).then(({ data }) => data);
 
+          console.log(`${bedhost_api_url}/objects/bed.${router.params.bed_md5sum}.bedfile/access/http`);
           bedDownload.BED_File = {
             id: "bedfile",
             label: "BED file",
@@ -143,6 +148,7 @@ const BedSplash = ({ router }) => {
 
         setBedDownload(bedDownload);
       } catch (error) {
+        console.log(error)
         setCode(error.response ? error.response.status : -1);
       }
     };

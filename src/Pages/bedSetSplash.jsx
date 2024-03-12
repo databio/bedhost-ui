@@ -47,7 +47,7 @@ const BedSetSplash = ({ router }) => {
         .get(`/bedset/${router.params.bedset_md5sum}/metadata`)
         .then(({ data }) => {
           setCode(200);
-          return data;
+          return data.metadata;
         })
         .catch(error => {
           setCode(error.response.status)
@@ -218,8 +218,8 @@ const BedSetSplash = ({ router }) => {
                         <div style={{
                           marginLeft: "10px"
                         }}>
-                          {genome.alias}
-                          {genome.digest !== "" ? (
+                          {genome?.alias || "N/A"}
+                          {genome?.digest && genome.digest !== "" ? (
                             <a
                               href={
                                 `http://refgenomes.databio.org/v3/genomes/splash/${genome.digest}`

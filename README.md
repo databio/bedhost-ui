@@ -1,3 +1,6 @@
+**Archived: This repository was merged into the `bedhost` repository, under the `ui` folder.
+
+
 # bedhost-ui
 
 This repository contains the source files for bedhost user interface written in React and built with Vite.
